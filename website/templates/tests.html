@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Tests{% endblock %}
+{% block content %}
+    <h1 align="center">Generate Tests</h1>
+    <form method="POST">
+        <label for="test_name" class="mb-5">Test Name:</label>
+        <input type="text" id="test_name" name="test_name">
+        <br>    
+        
+        <label for="n_questions" class="mb-5">No. of Questions:</label>
+        <input type="number" id="n_questions" name="n_questions" value="1">
+        <br>
+
+        <label for="course_name"class="mb-5">Course Name:</label>
+        <select id="course_name" name="course_name">
+            {% for course in user.courses %}
+                <option value="{{course.course_id}}">{{course.course_id}} - {{course.course_name}}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <h3 class="mb-2">Select PDFs Required</h3>
+        
+        {% for course in user.courses %}
+            <h4>{{course.course_name}}</h4>
+            {% for l in course.pdf %}
+                <label><input type="checkbox" name="my_checkboxes" value="{{l.id}}">{{l.pdf_name}}</label><br>
+            {% endfor %}
+        {% endfor %}
+        <!-- <div id="checkboxContainer"></div> -->
+        </select>
+        
+        <br />
+        <div align="center">
+            <button type="submit" class="m-5 btn btn-primary">Generate Test</button>
+        </div>
+    </form>
+    <h1 align="center">View Tests</h1>
+    {% if user.tests %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>test ID</th>
+                    <th>Test Name</th>
+                    <th>Course Code</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in user.tests %}
+                    <tr>
+                        <td>{{test.id}}</td>
+                        <td>{{test.test_name}}</td>
+                        <td>{{test.course_id}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{test.id}}">View Questions-Answers</button>
+                            <div class="modal fade" id="exampleModal{{test.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModal{{test.id}}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">  
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModal{{test.id}}Label">{{test.course_id}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                {% for qa in test.qa_pairs %}
+                                                    <h5>Question</h5>
+                                                    {{qa.question}}
+                                                    <h5>Answer</h5>
+                                                    {{qa.answer}}
+                                                    <hr>
+                                                {% endfor %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

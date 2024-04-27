@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <h1 align="center">Courses</h1>
+        <ul class="list-group list-group-flush" id="courses">
+        {% if user.courses %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>S No.</th>
+                        <th>Course Code</th>
+                        <th>Course Name</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in user.courses %}
+                    <tr>
+                        <td>{{course.id}}</td>
+                        <td>{{course.course_id}}</td>
+                        <td>{{course.course_name}}</td>
+                        <td>
+                            {% for l in course.pdf %}
+                                {% if user.id==l.user_id %}
+                                    <p><a href="{{l.link}}" target="blank">{{l.pdf_name}}</a></p>
+                                    <!-- <button type="button" class="close" onClick="deletePDF({{ l.id }})">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button> -->
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <!-- {% for course in user.courses %}
+            <li class="list-group-item">
+                {{ course }}
+                <button type="button" class="close" onClick="deleteCourse({{ course.id }})">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </li>
+        {% endfor %} -->
+    </ul>
+    <form method="POST">
+        <label for="course_name">Course Name:</label>
+        <input type="text" id="course_name" name="course_name">
+
+        <label for="course_id">Course ID:</label>
+        <input type="text" id="course_id" name="course_id">
+        
+        <label for="pdf_name">Name of PDF:</label>
+        <input type="text" id="pdf_name" name="pdf_name">
+
+        <label for="pdf_link">Link to PDF:</label>
+        <input type="text" id="pdf_link" name="pdf_link">
+
+        <br />
+        <div align="center">
+            <button type="submit" class="m-5 btn btn-primary">Upload Link</button>
+        </div>
+    </form>
+{% endblock %}

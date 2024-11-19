@@ -35,7 +35,7 @@ def read_pdf_from_google_drive(url):
 
     # Construct the download URL for the PDF file
     download_url = f"https://drive.google.com/uc?id={file_id}"
-
+    print(download_url)
     # Send a GET request to download the file
     response = requests.get(download_url)
 

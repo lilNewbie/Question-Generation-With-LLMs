@@ -37,19 +37,19 @@ def download_pdf_from_drive(link, filename):
         print(f"Error downloading PDF: {e}")
         return None
 
-# def is_valid_pdf(file_path):
-#     """Check if the file is a valid PDF by reading its header."""
-#     try:
-#         with open(file_path, 'rb') as f:
-#             header = f.read(4)
-#         return header == b'%PDF'
-#     except Exception as e:
-#         print(f"File validation error: {e}")
-#         return False
+def is_valid_pdf(file_path):
+    """Check if the file is a valid PDF by reading its header."""
+    try:
+        with open(file_path, 'rb') as f:
+            header = f.read(4)
+        return header == b'%PDF'
+    except Exception as e:
+        print(f"File validation error: {e}")
+        return False
 
-# def is_non_empty_file(file_path):
-#     """Check if the file exists and is not empty."""
-#     return os.path.exists(file_path) and os.path.getsize(file_path) > 0
+def is_non_empty_file(file_path):
+    """Check if the file exists and is not empty."""
+    return os.path.exists(file_path) and os.path.getsize(file_path) > 0
 
 @views.route('/home', methods=['POST', 'GET'])
 @login_required
